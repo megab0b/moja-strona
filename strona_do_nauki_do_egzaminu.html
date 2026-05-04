@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Moja Nauka</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    .notes {
+      margin-top: 20px;
+    }
+    .note {
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📚 Moje notatki do egzaminu</h1>
+
+    <textarea id="noteInput" placeholder="Wpisz tutaj informacje do zapamiętania..."></textarea>
+    <button onclick="addNote()">Dodaj notatkę</button>
+
+    <div class="notes" id="notesContainer"></div>
+  </div>
+
+  <script>
+    function addNote() {
+      const input = document.getElementById('noteInput');
+      const text = input.value.trim();
+
+      if (text === '') return;
+
+      const note = document.createElement('div');
+      note.className = 'note';
+      note.innerText = text;
+
+      document.getElementById('notesContainer').appendChild(note);
+
+      input.value = '';
+    }
+  </script>
+</body>
+</html>
