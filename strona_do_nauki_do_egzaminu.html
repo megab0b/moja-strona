@@ -2,74 +2,111 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8">
-  <title>Moja Nauka</title>
+  <title>Moja nauka</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 0;
+      background: #111;
+      color: #fff;
+      text-align: center;
       padding: 20px;
     }
-    h1 {
-      text-align: center;
-    }
-    .container {
-      max-width: 900px;
-      margin: auto;
-    }
+
     textarea {
-      width: 100%;
-      height: 150px;
-      margin-bottom: 10px;
+      width: 90%;
+      height: 100px;
+      margin: 10px 0;
       padding: 10px;
       border-radius: 10px;
-      border: 1px solid #ccc;
+      border: none;
     }
+
     button {
       padding: 10px 20px;
+      margin: 5px;
       border: none;
       border-radius: 10px;
-      background: #007bff;
+      background: #00bcd4;
       color: white;
       cursor: pointer;
     }
-    .notes {
-      margin-top: 20px;
-    }
-    .note {
-      background: white;
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+    .card {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 15px;
+      background: #222;
+      min-height: 100px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>📚 Moje notatki do egzaminu</h1>
 
-    <textarea id="noteInput" placeholder="Wpisz tutaj informacje do zapamiętania..."></textarea>
-    <button onclick="addNote()">Dodaj notatkę</button>
+  <h1>📚 Nauka do egzaminu</h1>
 
-    <div class="notes" id="notesContainer"></div>
-  </div>
+  <textarea id="input" placeholder="Wpisz informacje (np. pytanie - odpowiedź)"></textarea><br>
+  <button onclick="addNote()">Dodaj</button>
+
+  <div class="card" id="card">Brak danych</div>
+
+  <button onclick="prev()">⬅️ Poprzednie</button>
+  <button onclick="next()">➡️ Następne</button>
+  <button onclick="toggle()">🔁 Odwróć</button>
 
   <script>
+    let notes = [];
+    let index = 0;
+    let showAnswer = false;
+
     function addNote() {
-      const input = document.getElementById('noteInput');
-      const text = input.value.trim();
+      const input = document.getElementById('input').value;
+      if (!input.includes('-')) {
+        alert('Użyj formatu: pytanie - odpowiedź');
+        return;
+      }
 
-      if (text === '') return;
+      const parts = input.split('-');
+      notes.push({
+        q: parts[0].trim(),
+        a: parts[1].trim()
+      });
 
-      const note = document.createElement('div');
-      note.className = 'note';
-      note.innerText = text;
+      document.getElementById('input').value = '';
+      index = notes.length - 1;
+      showAnswer = false;
+      render();
+    }
 
-      document.getElementById('notesContainer').appendChild(note);
+    function render() {
+      if (notes.length === 0) {
+        document.getElementById('card').innerText = 'Brak danych';
+        return;
+      }
 
-      input.value = '';
+      const note = notes[index];
+      document.getElementById('card').innerText = showAnswer ? note.a : note.q;
+    }
+
+    function next() {
+      if (notes.length === 0) return;
+      index = (index + 1) % notes.length;
+      showAnswer = false;
+      render();
+    }
+
+    function prev() {
+      if (notes.length === 0) return;
+      index = (index - 1 + notes.length) % notes.length;
+      showAnswer = false;
+      render();
+    }
+
+    function toggle() {
+      showAnswer = !showAnswer;
+      render();
     }
   </script>
+
 </body>
 </html>
+
